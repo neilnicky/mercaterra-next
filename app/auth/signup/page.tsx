@@ -1,22 +1,28 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Leaf, ShoppingCart, Tractor, Eye, EyeOff } from "lucide-react"
-import { useToast } from "@/hooks/use-toast"
-import type { UserRole } from "@/types"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Leaf, ShoppingCart, Tractor, Eye, EyeOff } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import type { UserRole } from "@/types";
 
 export default function SignUpPage() {
-  const router = useRouter()
-  const { toast } = useToast()
+  const router = useRouter();
+  const { toast } = useToast();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -25,42 +31,42 @@ export default function SignUpPage() {
     role: "buyer" as UserRole,
     phone: "",
     district: "",
-  })
-  const [showPassword, setShowPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-  const [error, setError] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
+  });
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError("")
+    e.preventDefault();
+    setError("");
 
     if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match")
-      return
+      setError("Passwords do not match");
+      return;
     }
 
     if (formData.password.length < 6) {
-      setError("Password must be at least 6 characters")
-      return
+      setError("Password must be at least 6 characters");
+      return;
     }
 
-    setIsLoading(true)
+    setIsLoading(true);
 
     // Mock API call
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     toast({
       title: "Account created successfully!",
       description: "Please sign in with your new account.",
-    })
+    });
 
-    router.push("/auth/signin")
-  }
+    router.push("/auth/signin");
+  };
 
   const handleInputChange = (field: string, value: string | UserRole) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
-  }
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 flex items-center justify-center p-4">
@@ -75,33 +81,45 @@ export default function SignUpPage() {
         </div>
 
         <Card>
-          <CardHeader className="text-center">
+          <CardHeader className="text-center rounded-2xl">
             <CardTitle>Create your account</CardTitle>
-            <CardDescription>Join MercaTerra and start your journey</CardDescription>
+            <CardDescription>
+              Join MercaTerra and start your journey
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-3">
                 <Label>I want to join as a</Label>
                 <div className="grid grid-cols-2 gap-3">
-                  <Button
+                  <button
                     type="button"
-                    variant={formData.role === "buyer" ? "default" : "outline"}
-                    className="h-16 flex-col space-y-2"
+                    className={`p-3 rounded-lg border-2 transition-all ${
+                      formData.role === "buyer"
+                        ? "border-green-500 bg-green-50 text-green-700"
+                        : "border-gray-200 hover:border-gray-300 text-gray-600"
+                    }`}
                     onClick={() => handleInputChange("role", "buyer")}
                   >
-                    <ShoppingCart className="h-5 w-5" />
-                    <span>Buyer</span>
-                  </Button>
-                  <Button
+                    <div className="text-center">
+                      <div className="text-2xl mb-1">🛒</div>
+                      <div className="font-medium">Buyer</div>
+                    </div>
+                  </button>
+                  <button
                     type="button"
-                    variant={formData.role === "farmer" ? "default" : "outline"}
-                    className="h-16 flex-col space-y-2 bg-green-600 hover:bg-green-700 border-green-600"
+                    className={`p-3 rounded-lg border-2 transition-all ${
+                      formData.role === "farmer"
+                        ? "border-green-500 bg-green-50 text-green-700"
+                        : "border-gray-200 hover:border-gray-300 text-gray-600"
+                    }`}
                     onClick={() => handleInputChange("role", "farmer")}
                   >
-                    <Tractor className="h-5 w-5" />
-                    <span>Farmer</span>
-                  </Button>
+                    <div className="text-center">
+                      <div className="text-2xl mb-1">🚜</div>
+                      <div className="font-medium">Farmer</div>
+                    </div>
+                  </button>
                 </div>
               </div>
 
@@ -145,7 +163,9 @@ export default function SignUpPage() {
                   <Input
                     id="district"
                     value={formData.district}
-                    onChange={(e) => handleInputChange("district", e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("district", e.target.value)
+                    }
                     placeholder="Your location"
                   />
                 </div>
@@ -158,7 +178,9 @@ export default function SignUpPage() {
                     id="password"
                     type={showPassword ? "text" : "password"}
                     value={formData.password}
-                    onChange={(e) => handleInputChange("password", e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("password", e.target.value)
+                    }
                     placeholder="Create a password"
                     required
                   />
@@ -185,7 +207,9 @@ export default function SignUpPage() {
                     id="confirmPassword"
                     type={showConfirmPassword ? "text" : "password"}
                     value={formData.confirmPassword}
-                    onChange={(e) => handleInputChange("confirmPassword", e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("confirmPassword", e.target.value)
+                    }
                     placeholder="Confirm your password"
                     required
                   />
@@ -211,14 +235,21 @@ export default function SignUpPage() {
                 </Alert>
               )}
 
-              <Button type="submit" className="w-full bg-green-600 hover:bg-green-700" disabled={isLoading}>
+              <Button
+                type="submit"
+                className="w-full bg-green-600 hover:bg-green-700"
+                disabled={isLoading}
+              >
                 {isLoading ? "Creating Account..." : "Create Account"}
               </Button>
             </form>
 
             <div className="mt-6 text-center text-sm text-gray-600">
               Already have an account?{" "}
-              <Link href="/auth/signin" className="text-green-600 hover:underline font-medium">
+              <Link
+                href="/auth/signin"
+                className="text-green-600 hover:underline font-medium"
+              >
                 Sign in
               </Link>
             </div>
@@ -226,5 +257,5 @@ export default function SignUpPage() {
         </Card>
       </div>
     </div>
-  )
+  );
 }
